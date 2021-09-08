@@ -1,0 +1,24 @@
+version: '3'
+networks:
+  test-network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.18.0.0/24    
+
+services:
+  ip-resolver:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      args:
+        SERVER_PORT: ${IP_RESOLVER_SERVER_PORT}
+    image: artofimagination/ip-resolver
+    ports:
+      - ${IP_RESOLVER_SERVER_PORT}:${IP_RESOLVER_SERVER_PORT}
+    networks: 
+      test-network:
+        ipv4_address: 172.18.0.4
+    environment:
+      SERVER_PORT: ${IP_RESOLVER_SERVER_PORT}
